@@ -14,12 +14,85 @@ ERROR CASES: Return NULL for invalid inputs.
 NOTES:
 */
 
+#include<stdio.h>
 struct transaction {
 	int amount;
 	char date[11];
 	char description[20];
 };
+int DateCheck(char *date)
+{
+	int index;
+	for (index = 0; index < 11; index++)
+	{
+		if (index == 2 || index == 5)
+			if (date[index] != '-')
+				return 1;
+			else
+			{
+				if (date[index] <= '0' || date[index] >= '9')
+					return 0;
+			}
+
+	}
+	return 1;
+}
+int DateIsGreater(char *refDate, char *TransactionDate)
+{
+	int index;
+	for (index = 6; index < 10; index++)
+	{
+		if (TransactionDate[index] == refDate[index])
+			continue;
+		else
+		{
+			if (TransactionDate[index] < refDate[index])
+				return 0;
+			else
+				return 1;
+		}
+	}
+	for (index = 3; index < 5; index++)
+	{
+		if (TransactionDate[index] == refDate[index])
+			continue;
+		else
+		{
+			if (TransactionDate[index] < refDate[index])
+				return 0;
+			else
+				return 1;
+		}
+	}
+	for (index = 0; index < 3; index++)
+	{
+		if (TransactionDate[index] == refDate[index])
+			continue;
+		else
+		{
+			if (TransactionDate[index] < refDate[index])
+				return 0;
+			else
+				return 1;
+		}
+	}
+	return 0;
+}
 
 int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
-	return -1;
+	int index, count = 0;
+	if (Arr == nullptr || len<1)
+		return NULL;
+	for (index = 0; index < len; index++)
+	{
+		if (DateCheck(Arr[index].date))
+			return -1;
+	}
+	for (index = 0; index < len; index++)
+	{
+		if (DateIsGreater(date, Arr[index].date))
+			count++;
+	}
+	return count;
 }
+
